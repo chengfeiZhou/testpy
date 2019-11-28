@@ -7,7 +7,7 @@ from utils.YamlUtil import YamlReader
 # 1.2 获取当前项目的绝对路径
 current = os.path.abspath(__file__)
 BASE_DIR = os.path.dirname(os.path.dirname(current))
-print(current, BASE_DIR)
+# print(current, BASE_DIR)
 # 1.3 定义config目录的路径
 _config_path = BASE_DIR + os.sep + "config"
 _data_path = BASE_DIR + os.sep + "data"

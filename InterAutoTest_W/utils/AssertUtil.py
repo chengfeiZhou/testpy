@@ -6,8 +6,10 @@
 4. body相等
 5.body包含
 """
+import sys
+sys.path.append('../')
 import json
-from utils.LogUItil import my_log
+from utils.LogUtil import my_log
 
 class AssertUtil():
 
@@ -41,7 +43,8 @@ class AssertUtil():
         验证返回结果是否包含期望的结果
         """
         try:
-            assert json.dumps(body) in json.dumps(expected_body)
+            body = json.dumps(body)
+            assert expected_body in body
             return True
         except Exception as e:
             self.log.error(f'body error, body not in expected_body, body is {body}, expected_body is {expected_body}')

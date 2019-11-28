@@ -19,6 +19,7 @@ from utils.LogUtil import my_log
 from common import ExcelConfig
 from common import Base
 from utils.RequestsUtil import Request
+from utils.AssertUtil import AssertUtil
 
 case_file = os.path.join('../data', ConfigYaml().get_excel_file())
 sheet_name = ConfigYaml().get_excel_sheet()
@@ -65,8 +66,10 @@ class TestExcel():
         params = json.loads(params)
         if str(method).lower() == "get":
             res = request.get(url,json=params,headers=header,cookies=cookie)
+            log.debug('get请求')
         elif str(method).lower() == "post":
             res = request.post(url, json=params,headers=header,cookies=cookie)
+            log.debug('post请求')
         else:
             log.error(f"错误的请求方法:{method}")
         return res
@@ -107,6 +110,11 @@ class TestExcel():
         # 验证params有没有内容
         res = self.run_api(url, params, method, header, cookie)
         print(f"执行测试用例:{res}")
+        # 断言验证
+        assert_util = AssertUtil()
+        assert_util.assert_code(int(res['code']), code)
+        assert_util.assert_in_body(str(res['body']), str(expect_result))
+
 
     def get_correlation(self, headers, cookies, pre_res):
         """
