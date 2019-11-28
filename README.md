@@ -16,8 +16,8 @@
 
 #### 2.2 登录接口文档:
 - 后端接口设计:
-请求方式: POST /authorizations/
-请求参数:
+    - 请求方式: POST /authorizations/
+    - 请求参数:
 
 |参数名|类型|说明|
 |-|-|-|
@@ -40,8 +40,8 @@ headers:{
 }
 ```
 - 后端接口设计:
-请求方法: GET /user/
-返回数据:
+    - 请求方法: GET /user/
+    - 返回数据:
 
 |返回值|类型|是否必须|说明|
 |-|-|-|-|
@@ -54,8 +54,8 @@ headers:{
 - 业务需求:
 需要对商品数量进行分页支持,并且可以按照时间(默认)、价格、销量(人气)进行排序
 - 后端接口设计:
-请求方法: GET   /categories/(?P<category_id>\d+)/skus>page=xxx&page_size=xxx&ordering=xxx
-请求参数:
+    - 请求方法: GET   /categories/(?P<category_id>\d+)/skus>page=xxx&page_size=xxx&ordering=xxx
+    - 请求参数:
 
 |参数|类型|是否必须|说明|
 |-|-|-|-|
@@ -76,8 +76,8 @@ headers:{
 
 #### 2.5 添加到购物车:
 - 后端接口:
-请求方法: POST /cart/
-请求参数:
+    - 请求方法: POST /cart/
+    - 请求参数:
 
 |参数|类型|是否必须|说明|
 |-|-|-|-|
@@ -86,6 +86,7 @@ headers:{
 |selected|bool|否|是否勾选,默认勾选|
 
 返回数据:
+
 |参数|类型| 是否必须|说明|
 |-|-|-|-|
 |sku_id|int|是|商品sku_id|
@@ -96,8 +97,8 @@ headers:{
 
 #### 2.6 保存订单:
 - 后端接口设计:
-请求方式: POST  /orders/
-请求参数:
+    - 请求方式: POST  /orders/
+    - 请求参数:
 
 |参数|类型| 是否必须|说明|
 |-|-|-|-|
@@ -105,6 +106,7 @@ headers:{
 |pat_method|int|是|支付方式|
 
 返回数据:
+
 |参数|类型| 是否必须|说明|
 |-|-|-|-|
 |order_id|char|是|订单编号|
