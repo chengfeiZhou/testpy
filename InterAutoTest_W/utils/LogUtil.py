@@ -20,7 +20,7 @@ log_l = {
     "error": logging.ERROR
 }
 
-class logger():
+class Logger():
     def __init__(self, log_file, log_name, log_level):
         self.log_file = log_file
         self.log_name = log_name
@@ -52,15 +52,15 @@ log_path = Conf.get_log_path()
 current_time = datetime.datetime.now().strftime('%Y-%m-%d')
 log_extension = ConfigYaml().get_conf_log_extension()
 logfile = os.path.join(log_path,current_time+log_extension)
-print(logfile)
+# print(logfile)
 
 # 日志文件级别
 loglevel = ConfigYaml().get_conf_log()
-print(loglevel)
+# print(loglevel)
 
 # 2. 对外方法: 初始化log工具类, 提供其他类使用
 def my_log(log_name = __file__):
-    return logger(log_file=logfile, log_name=log_name, log_level=loglevel)
+    return Logger(log_file=logfile, log_name=log_name, log_level=loglevel).logger
 
 if __name__ == "__main__":
     my_log().debug("this is a debug")
