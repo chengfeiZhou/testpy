@@ -13,7 +13,7 @@ import functools
 from utils.LogUtil import my_log
 
 class Mysql():
-    def __init__(self,host,user,password,database,port=3306,charset='utf8'):
+    def __init__(self,host,user,password,database,port=3306,charset='utf8mb4'):
         self.cnn = pymysql.connect(
             host=host,
             port=port,
@@ -22,7 +22,7 @@ class Mysql():
             database=database,
             charset=charset
         )
-        self.cursor = self.cnn.cursor(cursor=pymysql.cursor.DictCursor) # 结果使用dict返回
+        self.cursor = self.cnn.cursor(cursor=pymysql.cursors.DictCursor) # 结果使用dict返回
         self.log = my_log()
 
     def __del__(self):
@@ -41,14 +41,14 @@ class Mysql():
         查询一个对象
         """
         self.cursor.execute(sql)
-        return self.fetchone()
+        return self.cursor.fetchone()
 
     def fetch_all(self, sql):
         """
         查询全部对象
         """
         self.cursor.execute(sql)
-        return self.fetchall()
+        return self.cursor.fetchall()
 
     def exec(self,sql):
         """

@@ -82,10 +82,10 @@ class ConfigYaml():
 
 if __name__ == "__main__":
     conf_read = ConfigYaml()
-    # print(conf_read)
-    # print(conf_read.get_conf_log())
-    # print(conf_read.get_conf_log_extension())
-    # print(conf_read.get_db_conf_info('db_1'))
-    print(conf_read.get_excel_file())
-    print(conf_read.get_excel_sheet())
+    print(conf_read)
+    print(conf_read.get_conf_log())
+    print(conf_read.get_conf_log_extension())
+    print(conf_read.get_db_conf_info('db_1'))
+    # print(conf_read.get_excel_file())
+    # print(conf_read.get_excel_sheet())
     

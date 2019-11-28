@@ -116,6 +116,15 @@ class TestExcel():
         assert_util.assert_in_body(str(res['body']), str(expect_result))
 
 
+        # 数据库验证
+        # sql = Base.init_db('db_1')
+        # db_res = sql.fetch_one(db_verify)
+        # log.debug(f"数据库查询结果:{str(db_res)}")
+        # for db_k,db_v in db_res.items():
+        #     res_line = res['body'][db_k]
+        #     assert_util.assert_body(res_line, db_v)
+        Base.assert_db(db_name ='db_1', res_body=res['body'], db_verify=db_verify )
+
     def get_correlation(self, headers, cookies, pre_res):
         """
         关联

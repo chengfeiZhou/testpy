@@ -8,8 +8,12 @@ import json
 import re
 from config.Conf import ConfigYaml
 from utils.MysqlUtil import Mysql
+from utils.AssertUtil import AssertUtil
+from utils.LogUtil import my_log
+
 
 p_data = r'\${(.*)}\$'
+log = my_log()
 def init_db(db_alias):
     db_init = ConfigYaml().get_db_conf_info(db_alias)
     host = db_init.get('host', '127.0.0.1')
@@ -21,6 +25,18 @@ def init_db(db_alias):
 
     conn = Mysql(host=host,port=port,user=user,password=password,database=database,charset=charset)
     return conn
+
+def assert_db(db_name, res_body, db_verify):
+    """
+    数据库验证
+    """
+    assert_util = AssertUtil()
+    sql = init_db(db_name)
+    db_res = sql.fetch_one(db_verify)
+    log.debug(f"数据库查询结果:{str(db_res)}")
+    for db_k,db_v in db_res.items():
+        res_line = res_body[db_k]
+        assert_util.assert_body(res_line, db_v)
 
 def json_parse(data):
     """
