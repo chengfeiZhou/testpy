@@ -25,6 +25,7 @@
 |password|str|密码|
 
 返回数据
+
 |返回值|类型|说明 |
 |-|-|-|
 |username|str|用户名|
@@ -64,6 +65,7 @@ headers:{
 |ordering|str|是|排序关键字(create_time, price, sales)
 
 返回数据:
+
 |返回值|类型|是否必须|说明|
 |-|-|-|-|
 |id|int|是|商品sku编号|
@@ -720,7 +722,7 @@ if __name__ == "__main__":
 
 ```
 
-## 六、pyyesy框架：
+## 六、pytesy框架：
 ### 1.安装与入门:
 #### 1.1 介绍:
 - 简单灵活;
