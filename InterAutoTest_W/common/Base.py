@@ -2,7 +2,7 @@
 # 1.定义一个方法init_db
 # 2.初始化数据库信息, 通过配置文件来完成
 # 3.初始化mysql对象
-
+import json
 from config.Conf import ConfigYaml
 from utils.MysqlUtil import Mysql
 
@@ -18,6 +18,12 @@ def init_db(db_alias):
 
     conn = Mysql(host=host,port=port,user=user,password=password,database=database,charset=charset)
     return conn
+
+def json_parse(data):
+    """
+    格式化数据
+    """
+    return json.loads(data) if data else data
 
 if __name__ == "__main__":
     conn = init_db('db_1')

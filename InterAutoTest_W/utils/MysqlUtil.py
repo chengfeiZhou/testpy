@@ -5,10 +5,12 @@
 3. 创建查询,执行方法
 4. 关闭对象
 """
+import sys
+sys.path.append('../')
 import pymysql
 import functools
 
-from utils.LogUItil import my_log
+from utils.LogUtil import my_log
 
 class Mysql():
     def __init__(self,host,user,password,database,port=3306,charset='utf8'):
