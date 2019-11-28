@@ -1712,8 +1712,53 @@ if __name__ == "__main__":
 - 用例id+接口名称 --> title
 - 请求url,请求类型,期望结果, 实际结果描述
 
+```python
+# ./tesecase/test_excel_case.py
+
+...
+class TestExcel():
+    ...
+
+    @pytest.mark.parametrize('case', run_list)
+    def test_run(self,case):
+        ...
+        print(f"执行测试用例:{res}")
+
+        # allure
+        allure.dynamic.feature(sheet_name)
+        allure.dynamic.story(case_model)
+        allure.dynamic.title(case_id + case_name)
+        desc = f"url:{url}<br> 请求方法:{method}<br> 期望结果:{expect_result}<br> 实际结果:{res}"
+        allure.dynamic.description(desc)
+
+
+        # 断言验证
+        ...
+```
+##### 2) 自动生成测试报告:
+*不用再手动执行生成allure的html报告*
+- subprocess介绍:
+    - 允许生产新的进程,并且可以把输入,输出,错误直接连接到管道,最后获取结果
+- 官方网站:
+    - https://docs.python.org/3.8/library/subprocess.html
+- 方法: 
+    - subprocess.all(): 父进程等待子进程完成, 返回退出信息(returncode, 相当于linux exit code)
+    - shell=True的用法, 支持命令以字符串的形式传入
+
+```python
+# ./common/Base.py
+
+def allure_report(report_path):
+    allure_cmd = f"allure generate {report_path}/result -o {report_path}/html --clean"
+    log.info(f"报告地址:{report_path}")
+    try:
+        subprocess.call(allure_cmd, shell=True)
+    except Exception as e:
+        log.error(e)
+```
 
 #### 3.2 项目运行:
+
 
 ## 十、邮件配置：
 

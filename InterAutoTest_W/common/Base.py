@@ -6,6 +6,7 @@ import sys
 sys.path.append('../')
 import json
 import re
+import subprocess
 from config.Conf import ConfigYaml
 from utils.MysqlUtil import Mysql
 from utils.AssertUtil import AssertUtil
@@ -14,6 +15,7 @@ from utils.LogUtil import my_log
 
 p_data = r'\${(.*)}\$'
 log = my_log()
+report_path = ""
 def init_db(db_alias):
     db_init = ConfigYaml().get_db_conf_info(db_alias)
     host = db_init.get('host', '127.0.0.1')
@@ -78,6 +80,15 @@ def params_find(headers, cookies):
         cookies = res_find(cookies)
     
     return headers, cookies
+
+def allure_report(report_path):
+    allure_cmd = f"allure generate {report_path}/result -o {report_path}/html --clean"
+    log.info(f"报告地址:{report_path}")
+    try:
+        subprocess.call(allure_cmd, shell=True)
+    except Exception as e:
+        log.error(e)
+
 
 if __name__ == "__main__":
     # conn = init_db('db_1')

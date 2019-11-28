@@ -13,6 +13,9 @@ sys.path.append('../')
 import pytest
 import json
 import re
+import allure
+
+from config import Conf
 from config.Conf import ConfigYaml
 from common.ExcelData import Data
 from utils.LogUtil import my_log
@@ -110,6 +113,15 @@ class TestExcel():
         # 验证params有没有内容
         res = self.run_api(url, params, method, header, cookie)
         print(f"执行测试用例:{res}")
+
+        # allure
+        allure.dynamic.feature(sheet_name)
+        allure.dynamic.story(case_model)
+        allure.dynamic.title(case_id + case_name)
+        desc = f"url:{url}<br> 请求方法:{method}<br> 期望结果:{expect_result}<br> 实际结果:{res}"
+        allure.dynamic.description(desc)
+
+
         # 断言验证
         assert_util = AssertUtil()
         assert_util.assert_code(int(res['code']), code)
@@ -145,7 +157,9 @@ class TestExcel():
         return headers, cookies
 
 if __name__ == "__main__":
-    pytest.main(['-s', 'test_excel_case.py'])
+    report_path = Conf._report_path()
+    pytest.main(['-s', 'test_excel_case.py', '--alluredir', report_path+'/reslut'])
+    Base.allure_report(report_path)
     # TestExcel().test_run()
 
     
