@@ -148,8 +148,7 @@ op5=>operation: 邮件
 
 op1->op2->op3->op4->op5
 ```
-### 3.代码结构：
-@import "./image/代码测试结构.jpg" {title="代码测试结构" alt="代码测试结构.jpg"}
+![代码测试结构](./image/代码测试结构.jpg)
 
 # 第二章 接口自动化框架编写
 ## 一、项目及框架的搭建:
@@ -168,7 +167,7 @@ op1->op2->op3->op4->op5
 ```shell
 InterAutoTest_W
 ```
-@import "./image/代码测试结构.jpg" {title="代码测试结构" alt="代码测试结构.jpg"}
+![代码测试结构](./image/代码测试结构.jpg)
 ### 3.配置(pycharm)：
 - 配置python环境:
 ```shell
