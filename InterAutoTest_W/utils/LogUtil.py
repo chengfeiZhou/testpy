@@ -5,6 +5,8 @@
 # 2.定义参数
     # 输出文件名称,Loggername,日志级别
 # 3.编写输出到控制台或文件
+import sys
+sys.path.append('../')
 
 import logging
 import datetime, os

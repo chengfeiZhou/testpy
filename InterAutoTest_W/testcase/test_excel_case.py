@@ -12,6 +12,7 @@ import sys
 sys.path.append('../')
 import pytest
 import json
+import re
 from config.Conf import ConfigYaml
 from common.ExcelData import Data
 from utils.LogUtil import my_log
@@ -50,7 +51,8 @@ class TestExcel():
         # 增加cookies
         cookie = Base.json_parse(cookies)
         res = self.run_api(url, params, method, header, cookie)
-        print(res)
+        print(f"执行前置用例: {res}")
+        return res
         
     
     def run_api(self,url, params, method ='get', header=None, cookie=None):
@@ -59,7 +61,7 @@ class TestExcel():
         """
         request = Request(ConfigYaml().get_config_url())
         if not len(str(params).strip()):
-            return
+            return params
         params = json.loads(params)
         if str(method).lower() == "get":
             res = request.get(url,json=params,headers=header,cookies=cookie)
@@ -92,8 +94,9 @@ class TestExcel():
         if pre_exec:
             # 前置用例
             pre_case = data_init.get_case_pre(pre_exec)
-            print(f"前置条件信息为:{pre_case}")
-            self.run_pre(pre_case)
+            # print(f"前置条件信息为:{pre_case}")
+            pre_res = self.run_pre(pre_case)
+            headers, cookies = self.get_correlation(headers, cookies,pre_res)
 
         # 增加headers
         header = Base.json_parse(headers)
@@ -103,8 +106,26 @@ class TestExcel():
         # params转义json
         # 验证params有没有内容
         res = self.run_api(url, params, method, header, cookie)
-        print(res)
+        print(f"执行测试用例:{res}")
 
+    def get_correlation(self, headers, cookies, pre_res):
+        """
+        关联
+        """
+        # 验证是否有关联
+        headers_para, cookies_para= Base.params_find(headers, cookies)
+        # 有关联执行前置用例,获取结果
+        if len(headers_para):
+            headers_data = pre_res['body'][headers_para[0]]
+            # 结果替换
+            headers = Base.res_sub(headers, headers_data)
+        
+        if len(cookies_para):
+            cookies_data = pre_res['body'][cookies_para[0]]
+            # 结果替换
+            cookies = Base.res_sub(headers, cookies_data)
+        
+        return headers, cookies
 
 if __name__ == "__main__":
     pytest.main(['-s', 'test_excel_case.py'])
