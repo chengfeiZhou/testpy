@@ -1,0 +1,17 @@
+
+---
+'case_name': "success login"
+'url': 'http://211.103.136.242:8064/authorizations/'
+'data': 
+  'username': "python"
+  'password': "12345678"
+'expect': "'username': 'python', 'user_id': 1"
+---
+'case_name': "failure login"
+'url': 'http://211.103.136.242:8064/authorizations/'
+'data': 
+  'username': "test123456"
+  'password': "1231111"
+'expect': "'username': 'python', 'user_id': 1"
+
+

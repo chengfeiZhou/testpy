@@ -1,0 +1,42 @@
+# name: "test_yaml"
+# result: "success"
+
+# - 12
+# - 32
+# - 33
+
+
+# person1:
+#   name: xiaoming
+#   age: 18
+# person2:
+#   name: xiaohong
+#   age: 16
+
+# person:
+#   - "a"
+#   - "b"
+#   - c
+
+
+# - 
+#   - 1
+#   - 2
+#   - 3
+# - "b"
+# - c
+# - 
+#   - 6
+#   - 7
+#   - 8 
+
+- 
+  name: xiaoming
+  age: 18
+- 2
+- 3
+-
+  name: xiaohong
+  age: 16
+
+

@@ -1,0 +1,7 @@
+db_1:
+  db_host: "211.103.136.242"
+  db_port: 7090
+  db_user: "test"
+  db_password: "test123456"
+  db_database: "meiduo"
+  db_charset: "utf8"
