@@ -54,6 +54,17 @@ class TestExcel():
         code = case[data_key.code]
         db_verify = case[data_key.db_verify]
 
+        # 增加headers
+        if headers:
+            header = json.loads(headers)
+        else:
+            header=headers
+        # 增加cookies
+        if cookies:
+            cookie = json.loads(cookies)
+        else:
+            cookie = cookies
+
         request = Request(ConfigYaml().get_config_url())
         # params转义json
         # 验证params有没有内容
@@ -61,9 +72,9 @@ class TestExcel():
             return
         params = json.loads(params)
         if str(method).lower() == "get":
-            res = request.get(url,json=params)
+            res = request.get(url,json=params,headers=header,cookies=cookie)
         elif str(method).lower() == "post":
-            res = request.post(url, json=params)
+            res = request.post(url, json=params,headers=header,cookies=cookie)
         else:
             log.error(f"错误的请求方法:{method}")
         print(res)
@@ -72,6 +83,8 @@ class TestExcel():
 if __name__ == "__main__":
     pytest.main(['-s', 'test_excel_case.py'])
     # TestExcel().test_run()
+
+    
 
 
 

@@ -48,11 +48,11 @@ class Request():
         self.url = url
 
     # 定义公共方法:
-    def request_api(self, uri, method='get', data=None,json=None, headers=None):
+    def request_api(self, uri, method='get', data=None,json=None, headers=None,cookies=None):
         if method == 'get':
-            r = requests.get(self.url+uri, data=data, json=json, headers=headers)
+            r = requests.get(self.url+uri, data=data, json=json, headers=headers, cookies=cookies)
         elif method == 'post':
-            r = requests.post(self.url+uri, data=data, json=json, headers=headers)
+            r = requests.post(self.url+uri, data=data, json=json, headers=headers, cookies=cookies)
         
         code = r.status_code
         try:

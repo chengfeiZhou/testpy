@@ -1586,7 +1586,11 @@ class Data():
                 self.run_list.append(line)
         return self.run_list
 ```
-
+#### 2,4 动态的headers请求
+- 1) 判断header是否存在? json转义: 无需
+- 2) 增加Headers
+- 3) 增加cookies
+- 4) 发送请求
 
 ## 九、Allure报告：
 
