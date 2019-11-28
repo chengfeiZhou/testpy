@@ -1615,6 +1615,105 @@ class Data():
     - 5) 验证
 
 ## 九、Allure报告：
+### 1.快速入门:
+#### 1.1 allure安装:
+- python插件:
+    - 命令行安装:
+```shell
+pip install allure-pytest
+```
+    - 源代码安装:
+```shell
+htpps://pypi.org/project/allure-pytest
+```
+
+- allure工具:
+    - 下载:
+    https://bintray.com/qameta/generic/allure2
+    https://github.com/allure-framework/allure2
+    - 前置条件:
+        - 已部署java环境
+    - 解压并配置系统环境变量;
+
+#### 1.2 allure使用:
+- 配置pytest.ini
+```ini
+[pytest]
+# addopts = -s --html=./report/report.html --reruns 3 --reruns-delay=2
+
+# allure setting
+addopts = -s --allure ./report/report.html
+...
+```
+- 添加allure代码;
+- 运行;
+- allure工具生成html报告;
+```shell
+allure generate {result_path} -o {report_path}
+or 
+allure generate {result_path} -o {report_path} --clean
+```
+
+### 2. allure详解:
+
+|注解|说明|
+|-|-|
+|Title|可以自定义用例标题, 标题默认函数名|
+|Description|测试用例的详细说明|
+|Feature|定义功能模块, 往下是Story|
+|Story|定义用户故事|
+|Severity|定义用例级别,主要有BLOCKER(拦截器), CRITICAL(关键), MINOR(次要), NORMAL(正常), TRIVIAL(琐碎)等几种类型,默认是NORMAL|
+|Allure.dynamic|动态设置相关配置|
+
+```python
+# coding=utf-8
+
+import pytest
+import allure
+
+@allure.feature('接口测试, 这是一个一级标签')
+class TestAllure():
+    # 定义测试方法
+    @allure.title('测试用例标题1')
+    @allure.description('执行测试用例1的结果是:test_1')
+    @allure.stroy("这是一个二级标签:test1")
+    @allure.severity(allure.severity.CRITICAL)
+    def test_1(self):
+        print("test_1")
+
+    @allure.title('测试用例标题2')
+    @allure.description('执行测试用例2的结果是:test_2')
+    @allure.stroy("这是一个二级标签:test1")
+    @allure.severity(allure.severity.BLOCKER)
+    def test_2(self):
+        print("test_2")
+
+    @allure.title('测试用例标题3')
+    @allure.description('执行测试用例3的结果是:test_3')
+    @allure.stroy("这是一个二级标签:test3")
+    def test_3(self):
+        print("test_3")
+
+    @pytest.mark.parametrize("case",['case1', 'case2', 'case3'])
+    def test_4(self, case):
+        print(f"test4: {case}")
+        allure.dynamic.title(case)
+
+
+if __name__ == "__main__":
+    pytest.main(['allure_demo.py'])
+```
+
+### 3. Allure应用:
+#### 3.1 应用测试用例:
+##### 1) 区分层级:
+- sheet名称 --> feature一级标签
+- 模块 --> story 二级标签
+- 用例id+接口名称 --> title
+- 请求url,请求类型,期望结果, 实际结果描述
+
+
+#### 3.2 项目运行:
 
 ## 十、邮件配置：
 
