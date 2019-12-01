@@ -1934,6 +1934,13 @@ if __name__ == "__main__":
 
 ### 3.4 运行:
 
+## 4、拓展:
+### 4.1 学习网站:
+- Dokcker安装jenkins:
+    - https://github.com/jenkinsci/docker/blob/master/README.md
+- Docker使用:
+    - https://www.runoob.com/docker/docker-container-usage.html
+
 
 
 
