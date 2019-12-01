@@ -24,7 +24,7 @@ from common import Base
 from utils.RequestsUtil import Request
 from utils.AssertUtil import AssertUtil
 
-case_file = os.path.join('../data', ConfigYaml().get_excel_file())
+case_file = os.path.join(Conf.get_data_path, ConfigYaml().get_excel_file())
 sheet_name = ConfigYaml().get_excel_sheet()
 data_init = Data(case_file, sheet_name)
 run_list = data_init.get_run_data()
