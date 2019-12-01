@@ -1759,10 +1759,180 @@ def allure_report(report_path):
 
 #### 3.2 项目运行:
 
-
 ## 十、邮件配置：
+### 1. 配置文件设置及邮件封装:
+(略)
+### 2. 邮件运行:
+(略)
 
-## 十一、本章总结
+# 三、持续集成与docker介绍及配置:
+## 1. jenkins和docker介绍及安装:
+### 1.1 docker:
+#### 1) 介绍:
+- 开源免费;
+- 方便快速搭建环境;
+- 自动化测试和持续集成,发布;
+
+#### 2)安装:
+- 流程:(基于centos)
+    - 1. 查看内核版本;
+    - 2. 安装需要的软件包;
+    - 3. 设置yum源;
+    - 4. 查询及安装docker;
+    - 5. 启用docker, 并加入开机启动;
+
+#### 3) docker拉取镜像慢:
+*将镜像源修改为阿里云镜像源*
+- 1. 编辑docker配置文件:
+```shell
+vi /lib/systemd/system/docker.service
+```
+- 2. 修改配置内容:
+```shell
+ExecStart=/usr/bin/docker
+修改为:
+ExecStart=/usr/bin/docker --registry-mirror=https://u1qbyfsc.mirror.aliyuncs.com
+```
+
+#### 4) docker的基本用法:
+
+|常用命令|说明|
+|-|-|
+|docker images|列出本地主机上的镜像|
+|docker ps -a| 查看容器状态|
+|docker start(stop,restart) container-name|容器启动(关闭,重启)命令|
+|docker exec|进入正在后台执行的容器(参数:-d: 分离模式,在后台执行; -i: 即使没有附加也保持STDIN打开; -t: 分配一个伪终端)|
+
+
+### 1.2 jenkins:
+#### 1) 介绍:
+- 开源免费;
+- 安装配置简单;
+- 跨平台,支持所有平台;
+- web形式的可视化管理页面;
+- 分布式构建;
+- 丰富的插件支持;
+
+#### 2) 安装:
+*系统: centos; 容器: docker*
+- 1. 选择docker版本安装;
+    - https://jenkins.io/zh/download/
+- 2. 安装;
+- 3. 查看下载完的镜像;
+- 4. 启动jenkins镜像;
+- 5. 浏览http://localhost 并等待*Unlock Jenkins*页面出现;
+- 6. 使用后面的步骤设置向导完成设置;
+
+#### 3) 启动jenkins:
+```shell
+docker run -d -p 80:8080 -p 50000:50000 -v jenkins:/var/jenkins_home -v /etc/localtime:/etc/localtime --name jenkins docker.io/jenkins/jenkins:lts
+```
+- 启动参数意义:
+
+|参数|意义|
+|-|-|
+|-d| 后台运行|
+|-p 80:8080|将镜像的8080端口映射到服务器的80端口|
+|-p 50000:50000|将镜像的50000端口映射到服务器的50000端口|
+|-v jenkins:/var/jenkins_home|/var/jenkins_home目录为jenkins工作目录,将硬盘上的一个目录挂载到这个位置, 方便后续更新镜像后继续使用原来的工作目录|
+|-v /etc/localtime:/etc/localtime|让容器使用和服务器使用同样的时间设置|
+|--name jenkins|给容器起个名| 
+ 
+## 2. Jenkins插件安装及配置:
+### 2.1 allure:
+#### 1)安装:
+- 1. 进入jenkins -> 系统管理 -> 管理插件 -> 可选插件
+- 2. 搜索框输入"allure" -> 选中点击"直接安装" -> 等待安装完成 -> 重启jenkins
+
+#### 2) 配置(Allure Commandline):
+- 设置路径:
+    - 系统设置 -> 全局工具配置 -> Allure Commandline
+
+- 1. Allure下载地址:
+    - https://dl.bintray.com/qameta/generic/io/qameta/allure/2.7.0
+- 2. Allure安装:
+    - 解压到本地, 配置环境变量即可.
+
+
+### 2.2 git:
+#### 1)安装:
+git是默认安装的
+
+
+#### 2) 配置:
+- 1) 系统管理 -> 全局工具配置 -> git
+- 2) 点击"添加" -> 输入name,path
+
+
+
+## 3. jenkins持续集成配置及运行:
+### 3.1 general:
+#### 1) 创建项目
+- 1. 进入jenkins主页;
+- 2. 点击"新建";
+- 3. 输入项目名称, 并点击"构建一个自由风格的软件项目";
+- 4. 点击"确定"
+
+
+#### 2) 配置项目:
+- 1. General;
+    - a. 节点配置:
+        - 系统管理 -> 节点管理 -> 新建节点
+        - windows为例:
+        - 工作目录: 工作目录
+        - 启动方式: "通过java web启动代理"
+    - b. 选择"在必要的时候并发构建"
+    - c. 选择"限制项目的运行节点" -> 输入要运行的节点
+    - 点击"保存"
+- 2. 源码管理;
+    - a. 选择"Git";
+    - b. 输入git地址;
+    - c. 添加jenkins凭证认证;
+- 3. 构建触发器;
+     - 第一颗 * 表示分钟, 取值0~59
+     - 第二颗 * 表示小时, 取值0~23
+     - 第三颗 * 表示一个月的第几天, 取值1~31
+     - 第四颗 * 表示一周中的第几天, 取值0~7, 其中0和7代表的都是周日
+- 4. 构建配置;
+    - 增加构建步骤:
+        - windows:
+            - Execute Windows batch command
+        - linux/Mac:
+            - Execute shell
+    - 编写run.py
+```python
+# ./run.py
+# coding=utf-8
+import os
+import pytest
+from config import Conf
+
+if __name__ == "__main__":
+    report_path = Conf._report_path()
+    pytest.main(['-s', '--alluredir', report_path+'/reslut'])
+```
+- 5. 报告;
+    - 1. 点击增加构建后步骤,选择"Allure Report";
+    - 2. 在path中输入allure报告所在的目录名称;
+- 5. 邮件;
+    - 1. jenkins -> 系统配置 -> 邮件通知
+    - 2. 设置相关信息;
+    - 3. 构建后的操作 -> 增加构建有的操作步骤 -> E-mail notification -> 接收邮箱
+#### 3) 运行项目:
+- 自动构建:
+
+- 手动构建: 
+    - jenkins -> 立即构建 -> 点击进度条 -> 点击"控制台输出" -> 查看报错信息
+
+#### 4) 查看邮件:
+
+#### 5) 查看报告:
+
+### 3.2 源码管理:
+
+### 3.3 其他配置:
+
+### 3.4 运行:
 
 
 
